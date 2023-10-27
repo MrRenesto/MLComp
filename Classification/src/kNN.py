@@ -1,4 +1,5 @@
 # Step 1: Load and Preprocess Data
+import numpy as np
 import pandas as pd
 from datetime import datetime
 from sklearn.model_selection import train_test_split
@@ -39,31 +40,26 @@ n_neighbors_values = range(1, 101)
 y_test_array = y_test['label'].to_numpy()
 y_train_array = y_train['label'].to_numpy()
 
-for n in n_neighbors_values:
-    clf = KNeighborsClassifier(n_neighbors=n)
-    clf.fit(X_train, y_train)
-    y_pred = clf.predict(X_test)
-    y_pred_train = clf.predict(X_train)
-    accuracy = accuracy_score(y_test_array, y_pred[:, 1])
-    accuracy_scores_test.append(accuracy)
+k_values = [i for i in range (1,41)]
+scores = []
 
-    accuracy2 = accuracy_score(y_train_array, y_pred_train[:, 1])
-    accuracy_scores_train.append(accuracy2)
+from sklearn.model_selection import cross_val_score
 
+for k in k_values:
+    knn = KNeighborsClassifier(n_neighbors=k)
+    score = cross_val_score(knn, X_train, y_train_array, cv=10)
+    scores.append(np.mean(score))
 
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(10, 6))
-plt.plot(n_neighbors_values, accuracy_scores_test, marker='.')
-plt.plot(n_neighbors_values, accuracy_scores_train, marker='.')
-plt.title('n_neighbors vs. Accuracy')
-plt.xlabel('n_neighbors')
-plt.ylabel('Accuracy')
+plt.plot(k_values,scores, marker = 'o')
+plt.xlabel("K Values")
+plt.ylabel("Accuracy Score")
 plt.grid(True)
 plt.show()
 
 
-"""
+
 validation_data = pd.read_csv('..\\Data\\test_features.csv')
 
 # 2. Extract the features from the validation data
@@ -72,7 +68,24 @@ X_val = X_val.drop('Id', axis=1)
 
 # 3. Make predictions using your trained model
 # Replace 'your_model' with the actual variable that holds your trained model
-y_pred_val = clf.predict(X_val.values)
+
+best_index = np.argmax(scores)
+best_k = k_values[best_index]
+
+knn = KNeighborsClassifier(n_neighbors=best_k)
+knn.fit(X_train, y_train)
+
+y_pred_val_test = knn.predict(X_test)
+y_pred_labels = y_pred_val_test[:, 1]
+
+
+# Calculate accuracy for binary classification
+accuracy = accuracy_score(y_test_array, y_pred_labels)
+
+print(f"Accuracy: {accuracy:.2f}")
+
+
+y_pred_val = knn.predict(X_val.values)
 y_pred_val = [pred[1] for pred in y_pred_val]
 
 # 4. Create a DataFrame with the predictions and the 'Id' column
@@ -85,4 +98,3 @@ file_name = f'predictions_validation_{current_datetime}.csv'
 # Save the DataFrame to the CSV file
 predictions_df.to_csv(file_name, index=False)
 
-"""
