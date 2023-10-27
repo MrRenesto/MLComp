@@ -11,11 +11,16 @@ from scipy import stats
 import warnings
 
 
-df = get_raw_data()
+df = get_raw_data('..\\Data\\train_features.csv')
 
 import pandas as pd
 
+import sweetviz as sv
 
+my_report = sv.analyze(df)
+my_report.show_html() # Default arguments will generate to "SWEETVIZ_REPORT.html"
+
+""" Plot Histogram
 # Set display options to prevent truncation
 pd.set_option('display.max_columns', None)  # Show all columns
 pd.set_option('display.max_rows', None)  # Show all rows
@@ -68,4 +73,4 @@ for page in range(total_pages):
 
 # Show a message indicating that images are saved
 print(f"{total_subplots} charts saved across {total_pages} pages. You can now scroll through them using an image viewer.")
-
+"""
