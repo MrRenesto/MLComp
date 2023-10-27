@@ -18,6 +18,7 @@ def upload_result(validation_data, y_pred_val, message):
         # Save the DataFrame to the CSV file
         predictions_df.to_csv("Predictions/" + file_name, index=False)
 
+        message = message.replace("\n", " ")
         command = "kaggle competitions submit -c seminar-isg-ml-competition-ws23-classification -m \"" + message + "\" -f Predictions/" + file_name
         try:
             # Run the command and capture its output

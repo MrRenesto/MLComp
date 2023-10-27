@@ -7,13 +7,13 @@ from ResultHandler import *
 
 X_train, X_test, y_train, y_test = get_train_and_test_data()
 
-X_test = preprocess(X_test)
-X_train, y_train = preprocess_training_data(X_train, y_train)
+y_test_array = y_test[:, 1]
+y_train_array = y_train[:, 1]
 
 print(X_train.shape)
-
-y_test_array = y_test['label'].to_numpy()
-y_train_array = y_train['label'].to_numpy()
+print(X_test.shape)
+print(y_test_array.shape)
+print(y_train_array.shape)
 
 k_values = [i for i in range (1,21)]
 scores = []
@@ -33,6 +33,7 @@ for k in k_values:
         best_k = k
 
 print("Best Index: " + str(best_k) + " with: " + str(best_f1_score))
+
 
 knn = KNeighborsClassifier(n_neighbors=best_k)
 knn.fit(X_train, y_train)
@@ -58,5 +59,5 @@ X_val = preprocess(X_val)
 y_pred_val = knn.predict(X_val)
 y_pred_val = [pred[1] for pred in y_pred_val]
 
-upload_result(validation_data, y_pred_val, "kNN Predictions")
+upload_result(validation_data, y_pred_val, "kNN Predictions with K = " + str(best_k) + " Report: " + report)
 
