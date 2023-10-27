@@ -6,6 +6,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import accuracy_score, classification_report
+from ResultHandler import *
 
 
 # Load your data from CSV files
