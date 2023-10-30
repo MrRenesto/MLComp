@@ -13,12 +13,16 @@ import warnings
 
 df = get_raw_data('..\\Data\\train_features.csv')
 
-import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-import sweetviz as sv
+# Calculate the correlation matrix
+correlation_matrix = df.corr()
 
-my_report = sv.analyze(df)
-my_report.show_html() # Default arguments will generate to "SWEETVIZ_REPORT.html"
+# Create a heatmap
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
+plt.show()
+
 
 """ Plot Histogram
 # Set display options to prevent truncation

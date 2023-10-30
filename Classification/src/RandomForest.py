@@ -9,6 +9,8 @@ from sklearn.metrics import accuracy_score, classification_report
 from ResultHandler import *
 
 
+
+
 # Load your data from CSV files
 features = pd.read_csv('..\\Data\\train_features.csv')
 labels = pd.read_csv('..\\Data\\train_label.csv')
