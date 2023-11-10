@@ -1,4 +1,5 @@
 from typing import Tuple, Any
+import matplotlib.pyplot as plt
 
 import numpy as np
 from sklearn.ensemble import IsolationForest
@@ -27,13 +28,13 @@ def get_train_and_test_data(featurefile='..\\Data\\train_features.csv', labelfil
 
     features = drop_features(features)
 
-    features, labels = preprocess_training_data(features.values, labels.values)
+    features = preprocess_training_data(features.values)
 
     # Perform data preprocessing
     # Handle missing values, encoding, scaling, etc.
 
     # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2, random_state=42, shuffle=False)
+    X_train, X_test, y_train, y_test = train_test_split(features, labels.values, test_size=0.2, random_state=42, shuffle=False)
 
     column_to_remove = 0  # Replace with the index or name of the column you want to remove
     #X_test = np.delete(X_test, column_to_remove, axis=1)
@@ -68,21 +69,39 @@ def get_validation_data(validation_file='..\\Data\\test_features.csv'):
     return validation_data, X_val.values
 
 
-def preprocess_training_data(X: Any, Y: Any) -> Tuple[Any,Any]:
-    # Create an Isolation Forest model
-    clf = IsolationForest(contamination=0.05, random_state=36)  # You can adjust the contamination parameter
+def preprocess_training_data(X: Any) -> Any:
 
-    # Fit the model to your data
-    clf.fit(X)  # X is your dataset
-    # Predict outliers
-    outliers = clf.predict(X)    # 'outliers' will contain -1 for outliers and 1 for inliers (normal data points)
+    # Create a list to store the minimum and maximum values for each feature
+    min_max_values = []
+
+    # Loop through each feature in X
+    X_cleaned = X.copy()  # Make a copy of the original data to avoid modifying it directly
+
+    for feature_index in range(X.shape[1]):
+        feature_values = X[:, feature_index]
+
+        # Calculate the lower whisker value (minimum)
+        min_boxplot_value = np.percentile(feature_values, 25) - 1.5 * (
+                    np.percentile(feature_values, 75) - np.percentile(feature_values, 25))
+
+        # Calculate the upper whisker value (maximum)
+        max_boxplot_value = np.percentile(feature_values, 75) + 1.5 * (
+                    np.percentile(feature_values, 75) - np.percentile(feature_values, 25))
+
+        min_max_values.append((min_boxplot_value, max_boxplot_value))
+
+        # Detect and replace outliers below the lower whisker with the minimum value
+        X_cleaned[X_cleaned[:, feature_index] < min_boxplot_value, feature_index] = min_boxplot_value
+
+        # Detect and replace outliers above the upper whisker with the maximum value
+        X_cleaned[X_cleaned[:, feature_index] > max_boxplot_value, feature_index] = max_boxplot_value
+
+    '''
     cleaned_data_X = X[outliers == 1]
     cleaned_data_Y = Y[outliers == 1]
+    '''
 
-    np.set_printoptions(threshold=np.inf, linewidth=np.inf)
-    print(outliers)
-
-    return preprocess(cleaned_data_X), cleaned_data_Y
+    return preprocess(X_cleaned)
 
 
 def preprocess(X: Any) -> Any:

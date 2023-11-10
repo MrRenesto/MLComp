@@ -77,7 +77,7 @@ report = classification_report(y_test_array, y_pred_labels, target_names=['Class
 print("Classification Report:\n", report)
 
 validation_data, X_val = get_validation_data()
-X_val = preprocess(X_val)
+X_val = preprocess_training_data(X_val)
 
 
 X_val = np.delete(X_val, list(highly_correlated), axis=1)
