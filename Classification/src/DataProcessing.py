@@ -25,8 +25,7 @@ def get_train_and_test_data(featurefile='..\\Data\\train_features.csv', labelfil
     features = pd.read_csv(featurefile)
     labels = pd.read_csv(labelfile)
 
-    if 'Id' in features:
-        features = features.drop('Id', axis=1)
+    features = drop_features(features)
 
     features, labels = preprocess_training_data(features.values, labels.values)
 
@@ -43,12 +42,29 @@ def get_train_and_test_data(featurefile='..\\Data\\train_features.csv', labelfil
     return X_train, X_test, y_train, y_test
 
 
+def drop_features(features):
+    if 'Id' in features:
+        features = features.drop('Id', axis=1)
+
+    if 'feature_30' in features:
+        features = features.drop('feature_30', axis=1)
+
+    if 'feature_3' in features:
+        features = features.drop('feature_13', axis=1)
+
+    if 'feature_1' in features:
+        features = features.drop('feature_1', axis=1)
+
+    if 'feature_14' in features:
+        features = features.drop('feature_14', axis=1)
+
+    return features
+
 def get_validation_data(validation_file='..\\Data\\test_features.csv'):
 
     validation_data = pd.read_csv(validation_file)
-
+    X_val = drop_features(validation_data)
     # 2. Extract the features from the validation data
-    X_val = validation_data.drop('Id', axis=1)
     return validation_data, X_val.values
 
 
