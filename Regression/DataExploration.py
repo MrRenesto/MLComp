@@ -3,24 +3,34 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 features = pd.read_csv('Data\\train_features.csv')
+features_test = pd.read_csv('Data\\test_features.csv')
 label = pd.read_csv('Data\\train_label.csv')
 
-# Filter rows where 'item' is equal to 1000
-filtered_features = features[features['item'] == 2980]
+# Count the number of unique values in the 'user' column
+unique_user_count = features['user'].nunique()
 
-filtered_labels = label[label['Id'].isin(filtered_features['Id'])]
-print(filtered_labels)
-# Count the occurrences of each rating value (0 to 5)
-rating_counts = label['rating'].value_counts().sort_index()
+print(f'The number of unique values in the "user" column is: {unique_user_count}')
 
-# Plot the counts
-plt.figure(figsize=(8, 6))
-rating_counts.plot(kind='bar')
-plt.xlabel('Rating')
-plt.ylabel('Count')
-plt.title('Counts of Ratings in Filtered Labels')
-plt.xticks(rotation=0)  # Keep the x-axis labels horizontal
-plt.show()
+unique_item_count = features['item'].nunique()
+
+print(f'The number of unique values in the "item" column is: {unique_item_count}')
+
+# Check for users in features_test but not in features
+new_users = features_test[~features_test['user'].isin(features['user'])]['user']
+
+# Check for items in features_test but not in features
+new_items = features_test[~features_test['item'].isin(features['item'])]['item']
+
+# Print the results
+if not new_users.empty:
+    print(f'Users in features_test but not in features: {new_users.tolist()}')
+else:
+    print('All users in features_test are also in features')
+
+if not new_items.empty:
+    print(f'Items in features_test but not in features: {new_items.tolist()}')
+else:
+    print('All items in features_test are also in features')
 '''
 
 import pandas as pd
