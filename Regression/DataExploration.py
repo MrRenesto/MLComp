@@ -2,7 +2,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# feature = Id,item,user,timestamp      /timestamp in ms
 features = pd.read_csv('Data\\train_features.csv')
+# label = Id,rating        /rating = 1,2,3,4 or 5
 label = pd.read_csv('Data\\train_label.csv')
 
 # Filter rows where 'item' is equal to 1000
