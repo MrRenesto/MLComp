@@ -62,7 +62,6 @@ def drop_features(features):
     return features
 
 def get_validation_data(validation_file='..\\Data\\test_features.csv'):
-
     validation_data = pd.read_csv(validation_file)
     X_val = drop_features(validation_data)
     # 2. Extract the features from the validation data

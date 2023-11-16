@@ -2,8 +2,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# feature = Id,item,user,timestamp      /timestamp in ms
 features = pd.read_csv('Data\\train_features.csv')
 features_test = pd.read_csv('Data\\test_features.csv')
+# label = Id,rating        /rating = 1,2,3,4 or 5
 label = pd.read_csv('Data\\train_label.csv')
 
 # Count the number of unique values in the 'user' column
