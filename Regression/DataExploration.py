@@ -33,6 +33,33 @@ if not new_items.empty:
     print(f'Items in features_test but not in features: {new_items.tolist()}')
 else:
     print('All items in features_test are also in features')
+
+columns_to_ignore = ['Id', 'timestamp']
+# Check for duplicates in 'features' DataFrame
+duplicates_features = features.duplicated(subset=[col for col in features.columns if col not in columns_to_ignore])
+# Check for duplicates in 'features_test' DataFrame
+duplicates_features_test = features_test.duplicated(subset=[col for col in features_test.columns if col not in columns_to_ignore])
+
+# Print the results
+print("Duplicates in 'features':", duplicates_features.any())
+print("Duplicates in 'features_test':", duplicates_features_test.any())
+
+
+# Extract relevant columns for comparison
+columns_for_comparison = [col for col in features_test.columns if col not in columns_to_ignore]
+
+# Check for common values in 'features_test' and 'features'
+common_values = features_test[columns_for_comparison].isin(features[columns_for_comparison])
+
+# Get the indices where common values exist
+common_indices = common_values[common_values.all(axis=1)].index
+
+# Print the combinations in 'features_test' that are also in 'features'
+if len(common_indices) > 0:
+    print("Combinations in 'features_test' that are also in 'features':")
+    print(features_test.loc[common_indices, columns_for_comparison])
+else:
+    print("No combinations in 'features_test' are also in 'features'.")
 '''
 
 import pandas as pd
