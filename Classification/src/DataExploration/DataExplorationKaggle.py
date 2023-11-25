@@ -9,9 +9,9 @@ import warnings
 
 from DataProcessing import get_raw_data
 
-df_train = get_raw_data('..\\Data\\train_features.csv')
-df_result = get_raw_data('..\\Data\\train_label.csv')
-def_test = get_raw_data('..\\Data\\test_features.csv')
+df_train = get_raw_data('../../Data/train_features.csv')
+df_result = get_raw_data('../../Data/train_label.csv')
+def_test = get_raw_data('../../Data/test_features.csv')
 
 
 for i in range(32):

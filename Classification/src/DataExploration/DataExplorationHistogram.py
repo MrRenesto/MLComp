@@ -2,8 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load train and test data
-dftrain = pd.read_csv('..\\Data\\train_features.csv')
-dftest = pd.read_csv('..\\Data\\test_features.csv')
+dftrain = pd.read_csv('../../Data/train_features.csv')
+dftest = pd.read_csv('../../Data/test_features.csv')
 
 for i in range(31):
     # Choose the feature you want to visualize as a histogram

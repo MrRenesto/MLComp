@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load train data
-dftrain = pd.read_csv('..\\Data\\train_features.csv')
+dftrain = pd.read_csv('../../Data/train_features.csv')
 
 # Choose the feature you want to visualize
 feature_name = 'feature_13'  # Adjust the feature name as needed

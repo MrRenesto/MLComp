@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load train data
-dftrain = pd.read_csv('..\\Data\\train_features.csv')
+dftrain = pd.read_csv('../../Data/train_features.csv')
 
 dftrain = dftrain.drop('Id', axis=1)
 

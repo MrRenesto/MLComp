@@ -2,11 +2,14 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-from DataProcessing import *
+from src.DataProcessing import *
 
 
 # Load data
-df = get_raw_data('..\\Data\\train_features.csv')
+df = get_raw_data('../../Data/train_features.csv')
+df_label = get_raw_data('../../Data/train_label.csv')
+
+df = pd.merge(df, df_label, on='Id')
 
 if 'Id' in df:
     df = df.drop('Id', axis=1)
