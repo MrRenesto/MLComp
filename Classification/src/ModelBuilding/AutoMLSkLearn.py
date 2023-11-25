@@ -4,6 +4,7 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score, classification_report
 from src.ResultHandler import *
+import autosklearn.classification
 
 # Load feature data
 features_df = pd.read_csv('..\\..\\Data\\train_features.csv')
@@ -22,9 +23,9 @@ y = data['label']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-rf_classifier = RandomForestClassifier(n_estimators=100)
-adaboost_classifier = AdaBoostClassifier(rf_classifier, n_estimators=50, learning_rate=1.0)
-adaboost_classifier.fit(X_train, y_train)
+cls = autosklearn.classification.AutoSklearnClassifier()
+cls.fit(X_train, y_train)
+predictions = cls.predict(X_test)
 
 
 # You can also calculate and print the average F1 score across all classes
@@ -40,13 +41,7 @@ y_pred = adaboost_classifier.predict(X_test)
 report = classification_report(y_test, y_pred, target_names=['Class 0', 'Class 1'])
 print("Classification Report:\n", report)
 
-# Print feature importances
-feature_importances = pd.DataFrame(adaboost_classifier.feature_importances_, index=X.columns, columns=['Importance'])
-feature_importances = feature_importances.sort_values(by='Importance', ascending=False)
-print("Feature Importances:")
-print(feature_importances)
-
-
+'''
 labels_df = pd.read_csv('..\\..\\Data\\test_features.csv')
 
 labels_df2 = labels_df.drop('Id', axis=1)
@@ -57,3 +52,4 @@ labels_df2 = labels_df.drop('Id', axis=1)
 labels_df_pred = adaboost_classifier.predict(labels_df2)
 
 upload_result(labels_df, labels_df_pred, "RandomForest F1 Local: " + str(report))
+'''
