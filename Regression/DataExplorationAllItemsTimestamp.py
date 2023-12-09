@@ -12,7 +12,7 @@ merged_data = pd.merge(features, label, on='Id')
 merged_data['timestamp'] = pd.to_datetime(merged_data['timestamp'], unit='ms')
 
 # Group by month and year, and calculate the mean rating and count for each year
-grouped_data_all_items = merged_data.groupby([merged_data['timestamp'].dt.to_period("Y")])['rating'].agg(['mean', 'count']).reset_index()
+grouped_data_all_items = merged_data.groupby([merged_data['timestamp'].dt.to_period("M")])['rating'].agg(['mean', 'count']).reset_index()
 
 # Convert Period to a suitable representation for plotting
 grouped_data_all_items['timestamp'] = grouped_data_all_items['timestamp'].astype(str)

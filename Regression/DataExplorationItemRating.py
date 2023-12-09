@@ -53,7 +53,7 @@ user_count_in_intervals = {}
 # Loop through the intervals and count users in each interval
 for interval in intervals:
     start, end = interval
-    interval_label = f"{start}-{end} votes"
+    interval_label = f"{start}-{end} Ratings"
     users_in_interval = user_metrics[(user_metrics['num_ratings'] >= start) & (user_metrics['num_ratings'] <= end)]
     user_count_in_intervals[interval_label] = len(users_in_interval)
 

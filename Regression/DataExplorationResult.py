@@ -13,20 +13,20 @@ user_count_in_intervals = {}
 # Loop through the intervals and count users in each interval
 for interval in intervals:
     start, end = interval
-    interval_label = f"{start}-{end} votes"
+    interval_label = f"{start}-{end} Ratings"
     users_in_interval = user_metrics[(user_metrics['num_ratings'] >= start) & (user_metrics['num_ratings'] <= end)]
     user_count_in_intervals[interval_label] = len(users_in_interval)
 
 # Convert the dictionary to a DataFrame for better visualization
-interval_counts_df = pd.DataFrame(list(user_count_in_intervals.items()), columns=['Vote Interval', 'User Count'])
+interval_counts_df = pd.DataFrame(list(user_count_in_intervals.items()), columns=['Rating Interval', 'User Count'])
 
 # Create a bar chart with a logarithmic Y-axis scale and value labels
 plt.figure(figsize=(10, 6))
-bars = plt.bar(interval_counts_df['Vote Interval'], interval_counts_df['User Count'])
+bars = plt.bar(interval_counts_df['Rating Interval'], interval_counts_df['User Count'])
 plt.yscale('log')  # Use a logarithmic scale for the Y-axis
-plt.xlabel('Vote Count Interval')
+plt.xlabel('Rating Count Interval')
 plt.ylabel('Number of Users (log scale)')
-plt.title('Users by Vote Count Interval (log scale)')
+plt.title('Users by Rating Count Interval (log scale)')
 plt.xticks(rotation=45, ha='right')
 
 # Add value labels above each bar
