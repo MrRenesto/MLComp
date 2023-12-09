@@ -5,9 +5,9 @@ from sklearn.metrics import mean_squared_error
 import numpy as np
 
 # Load features, labels, and test features
-features = pd.read_csv('Data\\train_features.csv')
-features_test = pd.read_csv('Data\\test_features.csv')
-label = pd.read_csv('Data\\train_label.csv')
+features = pd.read_csv('Data/train_features.csv')
+features_test = pd.read_csv('Data/test_features.csv')
+label = pd.read_csv('Data/train_label.csv')
 
 # Combine features and labels into a single DataFrame
 train_data = pd.concat([features, label], axis=1)

@@ -3,14 +3,16 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score, classification_report
-from src.ResultHandler import *
+from Classification.src.ResultHandler import *
 
 # Load feature data
-features_df = pd.read_csv('..\\..\\Data\\train_features.csv')
-labels_df = pd.read_csv('..\\..\\Data\\train_label.csv')
+features_df = pd.read_csv('../../Data/train_features.csv')
+labels_df = pd.read_csv('../../Data/train_label.csv')
 
 # Merge dataframes based on 'Id' column
 data = pd.merge(features_df, labels_df, on='Id')
+
+data.to_csv('../../Data/train_feature_and_label.csv',index=False)
 
 data = data.drop('Id', axis=1)
 # data = data.drop('feature_2', axis=1)
