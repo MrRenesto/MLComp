@@ -1,0 +1,35 @@
+/usr/bin/python3.10 /home/rsauermann/PycharmProjects/MLComp/Classification/src/FeatureImportance.py
+       Feature Importance
+16  feature_16   0.144572
+24  feature_24   0.065067
+11  feature_11   0.062521
+27  feature_27   0.051944
+8    feature_8   0.046778
+23  feature_23   0.044117
+9    feature_9   0.040690
+26  feature_26   0.040335
+19  feature_19   0.038948
+30  feature_30   0.034025
+29  feature_29   0.031664
+21  feature_21   0.031562
+0    feature_0   0.031388
+15  feature_15   0.029665
+4    feature_4   0.029526
+17  feature_17   0.028750
+25  feature_25   0.028628
+7    feature_7   0.028375
+1    feature_1   0.025279
+6    feature_6   0.025277
+3    feature_3   0.021376
+18  feature_18   0.019954
+28  feature_28   0.016663
+5    feature_5   0.015880
+13  feature_13   0.015706
+14  feature_14   0.014803
+22  feature_22   0.013880
+12  feature_12   0.011015
+10  feature_10   0.009177
+20  feature_20   0.002437
+2    feature_2   0.000000
+
+Process finished with exit code 0

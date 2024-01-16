@@ -8,6 +8,8 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import LinearSVC, SVC
 import numpy as np
+from sklearn.utils import resample
+from scipy.sparse import coo_matrix
 
 from lightgbm import LGBMClassifier
 from Classification.src.ResultHandler import *
@@ -55,6 +57,8 @@ X = scaler.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
+X_sparse = coo_matrix(X_train)
+X_train, X_sparse, y_train = resample(X_train, X_sparse, y_train)
 
 random_state = 4269
 
@@ -79,6 +83,7 @@ for algo in listAlgo:
     # Perform cross-validation
     scores = cross_validate(algo, X_train, y_train, cv=5, scoring=['f1_macro', 'precision_macro', 'recall_macro', 'accuracy'])
 
+    algo.fit(X_train, y_train)
     predict = algo.predict(X_test)
 
     f1_macro = f1_score(y_test, predict, average='macro')
@@ -94,7 +99,7 @@ for algo in listAlgo:
                                     'Precision Macro': avg_precision,
                                     'Recall Macro': avg_recall,
                                     'Accuracy': avg_accuracy,
-                                    'Validation Score F1':f1_macro}, ignore_index=True)
+                                     'F1 Test Data: ': f1_macro}, ignore_index=True)
 
 
 pd.set_option('display.max_rows', None)

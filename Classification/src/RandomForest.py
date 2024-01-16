@@ -12,8 +12,8 @@ from ResultHandler import *
 
 
 # Load your data from CSV files
-features = pd.read_csv('..\\Data\\train_features.csv')
-labels = pd.read_csv('..\\Data\\train_label.csv')
+features = pd.read_csv('../Data/train_features.csv')
+labels = pd.read_csv('../Data/train_label.csv')
 
 # Perform data preprocessing
 # Handle missing values, encoding, scaling, etc.
@@ -25,7 +25,7 @@ X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=
 from sklearn.ensemble import RandomForestClassifier
 
 # Choose a classification algorithm
-clf = RandomForestClassifier(n_estimators=100,max_features=10)
+clf = RandomForestClassifier()
 
 # Step 3: Train the Model
 clf.fit(X_train, y_train)
@@ -55,7 +55,7 @@ print(f"Accuracy: {accuracy:.2f}")
 print(classification_report(y_test_array, y_pred_labels))
 
 
-validation_data = pd.read_csv('..\\Data\\test_features.csv')
+validation_data = pd.read_csv('../Data/test_features.csv')
 
 # 2. Extract the features from the validation data
 X_val = validation_data  # All columns except the 'Id' column

@@ -2,8 +2,8 @@
 from sklearn.ensemble import RandomForestRegressor
 import pandas as pd
 
-X = pd.read_csv('..\\Data\\train_features.csv')
-y = pd.read_csv('..\\Data\\train_label.csv')
+X = pd.read_csv('../Data/train_features.csv')
+y = pd.read_csv('../Data/train_label.csv')
 
 if 'Id' in X:
     X = X.drop('Id', axis=1)

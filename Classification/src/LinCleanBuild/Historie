@@ -1,0 +1,29 @@
+Best Parameters: {'model__num_leaves': 784, 'model__min_data_in_leaf': 79, 'model__max_depth': 13, 'model__feature_fraction': 0.5134284852526791, 'model__bagging_frequency': 9, 'model__bagging_fraction': 0.28773443161383466}
+Best f1_macro Score: 0.7874744993752276
+
+Test Loss: 0.4405445158481598, Test Accuracy: 0.8269230723381042
+Best Hyperparameters:
+Units in Input Layer: 96
+Units in Hidden Layer: 192
+Learning Rate: 0.001
+
+Test Accuracy: 0.7821
+Best Hyperparameters:
+Units in Input Layer: 320
+Units in Hidden Layer: 416
+Learning Rate: 0.01
+
+
+               precision    recall  f1-score   support
+
+     Class 0       0.80      0.90      0.85       102
+     Class 1       0.76      0.57      0.65        54
+
+    accuracy                           0.79       156
+   macro avg       0.78      0.74      0.75       156
+weighted avg       0.78      0.79      0.78       156
+
+Best Hyperparameters: {'bagging_fraction': 0.34019066896289585, 'bagging_frequency': 8, 'feature_fraction': 0.19675709353759885, 'max_depth': 7, 'min_data_in_leaf': 88, 'n_estimators': 104, 'num_leaves': 1441}
+
+randomstates:
+69

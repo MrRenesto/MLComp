@@ -10,6 +10,9 @@ import numpy as np
 from lightgbm import LGBMClassifier
 from Classification.src.ResultHandler import *
 
+from sklearn.utils import resample
+from scipy.sparse import coo_matrix
+
 # Load feature data
 features_df = pd.read_csv('../../Data/train_features.csv')
 labels_df = pd.read_csv('../../Data/train_label.csv')
@@ -27,7 +30,7 @@ scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
 from skopt import BayesSearchCV
-
+'''
 rs_params = {
         'n_estimators': (500, 600),
         'learning_rate': (0.1, 0.2),
@@ -62,24 +65,30 @@ print("Best F1 Score: ", random_search.best_score_)
 rf_classifier = LGBMClassifier()
 
 # You can also calculate and print the average F1 score across all classes
-f1_scores = cross_val_score(rf_classifier, X, y, cv=5, scoring='f1_macro')
-print("Average F1 Score: " + str(f1_scores))
+#f1_scores = cross_val_score(rf_classifier, X, y, cv=5, scoring='f1_macro')
+#print("Average F1 Score: " + str(f1_scores))
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+randomstate=420
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=randomstate)
+
+#X_sparse = coo_matrix(X_train)
+#X_train, X_sparse, y_train = resample(X_train, X_sparse, y_train)
+
 rf_classifier.fit(X_train, y_train)
 y_pred = rf_classifier.predict(X_test)
 
 report = classification_report(y_test, y_pred, target_names=['Class 0', 'Class 1'])
 print("Classification Report:\n", report)
 
-labels_df = pd.read_csv('..\\..\\Data\\test_features.csv')
+labels_df = pd.read_csv('../../Data/test_features.csv')
 
 labels_df2 = labels_df.drop('Id', axis=1)
 labels_df2 = labels_df2.drop('feature_2', axis=1)
 
+#scaler = StandardScaler()
 labels_df2 = scaler.fit_transform(labels_df2)
 
 labels_df_pred = rf_classifier.predict(labels_df2)
 
-upload_result(labels_df, labels_df_pred, "RandomForest F1 Report: " + str(report))
-'''
+upload_result(labels_df, labels_df_pred, "Randomstate = " + str(randomstate) + "RandomForest F1 Report: " + str(report))
