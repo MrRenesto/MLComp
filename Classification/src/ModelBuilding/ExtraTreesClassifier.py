@@ -12,7 +12,7 @@ from sklearn.utils import resample
 from scipy.sparse import coo_matrix
 
 from lightgbm import LGBMClassifier
-from Classification.src.ResultHandler import *
+from ResultHandler import *
 from sklearn.ensemble import ExtraTreesClassifier, GradientBoostingClassifier, RandomForestClassifier, \
     AdaBoostClassifier, BaggingClassifier, VotingClassifier
 from sklearn.linear_model import LogisticRegression
@@ -52,6 +52,7 @@ y = data['label']
 # for column in X.columns:
 #    handle_outliers(column)
 
+
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
@@ -84,9 +85,9 @@ for algo in listAlgo:
     scores = cross_validate(algo, X_train, y_train, cv=5, scoring=['f1_macro', 'precision_macro', 'recall_macro', 'accuracy'])
 
     algo.fit(X_train, y_train)
-    predict = algo.predict(X_test)
+    #predict = algo.predict(X_test)
 
-    f1_macro = f1_score(y_test, predict, average='macro')
+    #f1_macro = f1_score(y_test, predict, average='macro')
     # Extract and calculate average scores
     avg_f1 = scores['test_f1_macro'].mean()
     avg_precision = scores['test_precision_macro'].mean()
@@ -98,8 +99,7 @@ for algo in listAlgo:
                                     'F1 Macro': avg_f1,
                                     'Precision Macro': avg_precision,
                                     'Recall Macro': avg_recall,
-                                    'Accuracy': avg_accuracy,
-                                     'F1 Test Data: ': f1_macro}, ignore_index=True)
+                                    'Accuracy': avg_accuracy}, ignore_index=True)
 
 
 pd.set_option('display.max_rows', None)

@@ -1,5 +1,5 @@
 
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier, ExtraTreesClassifier, BaggingClassifier
 import pandas as pd
 
 X = pd.read_csv('../Data/train_features.csv')
@@ -13,7 +13,7 @@ if 'Id' in y:
     y = y.drop('Id', axis=1)
 
 
-model = RandomForestRegressor()
+model = BaggingClassifier()
 model.fit(X, y.values.ravel())  # X is your feature data, y is your target
 feature_importance = model.feature_importances_
 
