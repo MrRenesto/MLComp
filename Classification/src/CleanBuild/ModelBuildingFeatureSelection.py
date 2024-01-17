@@ -40,7 +40,7 @@ best_subset = None
 
 # Loop through different fractions of features in the random subset
 for fraction in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]:
-    for i in range(100):
+    for i in range(10):
         # Select a subset of features
         current_subset = random_subset.sample(frac=fraction, axis=1)
 
