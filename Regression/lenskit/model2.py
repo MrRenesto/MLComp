@@ -41,6 +41,7 @@ def eval(algo, train, test):
 #read csv
 features = pd.read_csv('../Data/train_features.csv')
 labels = pd.read_csv('../Data/train_label.csv')
+predict_data = pd.read_csv('../Data/test_features.csv')
 
 #megre to remove all duplicates
 data = pd.merge(features, labels, on='Id')
@@ -71,5 +72,5 @@ algo_svd = svd.BiasedSVD(100, damping=5, bias=True)
 
 if __name__ == '__main__':
     #result = eval( algo_ii, data, test)
-    result=eval( algo_als, data, test_feature)
+    result=eval( algo_als, train, test_feature)
     print(np.sqrt(mean_squared_error(test_label, result)))
