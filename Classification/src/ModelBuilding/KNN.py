@@ -7,11 +7,12 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import LinearSVC
 import numpy as np
 
-from src.ResultHandler import *
+
+from Classification.src.ResultHandler import upload_result
 
 # Load feature data
-features_df = pd.read_csv('..\\..\\Data\\train_features.csv')
-labels_df = pd.read_csv('..\\..\\Data\\train_label.csv')
+features_df = pd.read_csv('../../Data/train_features.csv')
+labels_df = pd.read_csv('../../Data/train_label.csv')
 
 # Merge dataframes based on 'Id' column
 data = pd.merge(features_df, labels_df, on='Id')

@@ -1,59 +1,29 @@
-import pandas as pd
-from numpy.random import randint, uniform
-from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV, RandomizedSearchCV
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import f1_score, classification_report
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.svm import LinearSVC
-import numpy as np
-from lightgbm import LGBMClassifier
-from Classification.src.ResultHandler import *
-import numpy as np
-from catboost import CatBoostClassifier, Pool
+from catboost import CatBoostClassifier
 
-from sklearn.utils import resample
-from scipy.sparse import coo_matrix
+from Classification.src.LinCleanBuild.ModelBuilding import buildmodel
 
-# Load feature data
-features_df = pd.read_csv('../../Data/train_features.csv')
-labels_df = pd.read_csv('../../Data/train_label.csv')
+#buildmodel(CatBoostClassifier(depth=8, l2_leaf_reg=10, learning_rate=0.18, num_trees=121), False, False)
+# [0.78710142 0.77301111 0.80411822 0.79069225 0.77618406]
 
-# Merge dataframes based on 'Id' column
-data = pd.merge(features_df, labels_df, on='Id')
 
-data = data.drop('Id', axis=1)
-data = data.drop('feature_2', axis=1)
+buildmodel(CatBoostClassifier(depth=8, l2_leaf_reg=10, learning_rate=0.18, num_trees=121), True, True)
+# [0.77400309 0.78504821 0.81308368 0.80106344 0.79617261]
+# Mean F1_macro: 0.7938742065361675
+# Standard Deviation of F1_macro: 0.01340694704179604
 
-X = data.drop('label', axis=1)  # Assuming 'label' is the column with your labels
-y = data['label']
 
-scaler = StandardScaler()
-X = scaler.fit_transform(X)
+#buildmodel(CatBoostClassifier(depth=8, l2_leaf_reg=10, learning_rate=0.18, num_trees=121), True, False)
+# [0.77800061 0.80931511 0.79158682 0.77779319 0.79212912]
+# Mean F1_macro: 0.7897649688938688
+# Standard Deviation of F1_macro: 0.011600342239140861
 
-rf_classifier = CatBoostClassifier(iterations=10,
-                           depth=2,
-                           learning_rate=1,
-                           loss_function='Logloss',
-                           verbose=True)
+#buildmodel(CatBoostClassifier(), False, False)
+# [0.78275845 0.80101896 0.79933492 0.76474908 0.78435177]
+# Mean F1_macro: 0.7864426378771844
+# Standard Deviation of F1_macro: 0.013169930550282517
 
-randomstate=420
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=randomstate)
 
-rf_classifier.fit(X_train, y_train)
-y_pred = rf_classifier.predict(X_test)
-
-report = classification_report(y_test, y_pred, target_names=['Class 0', 'Class 1'])
-print("Classification Report:\n", report)
-
-labels_df = pd.read_csv('../../Data/test_features.csv')
-
-labels_df2 = labels_df.drop('Id', axis=1)
-labels_df2 = labels_df2.drop('feature_2', axis=1)
-
-#scaler = StandardScaler()
-labels_df2 = scaler.fit_transform(labels_df2)
-
-labels_df_pred = rf_classifier.predict(labels_df2)
-
-upload_result(labels_df, labels_df_pred, "Randomstate = " + str(randomstate) + "RandomForest F1 Report: " + str(report))
+# buildmodel(CatBoostClassifier(), True, True)
+# [0.76491204 0.79227892 0.81624709 0.80961541 0.77851869]
+# Mean F1_macro: 0.792314430255671
+# Standard Deviation of F1_macro: 0.019043689488203817

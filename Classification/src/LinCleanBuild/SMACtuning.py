@@ -29,7 +29,7 @@ def loaddata():
     return X_train, X_test, y_train, y_test
 
 
-def hyperparamtuning(classifierP, configSpace, train_method, dir, X_train, X_test, y_train, y_test):
+def hyperparamtuning(classifierP, configSpace, train_method, dir, X_train, X_test, y_train, y_test, trails=50):
 
 
     # Define your binary classification model
@@ -39,7 +39,7 @@ def hyperparamtuning(classifierP, configSpace, train_method, dir, X_train, X_tes
     cs = configSpace
     # Add other hyperparameters as needed
     # Scenario object specifying the optimization environment
-    scenario = Scenario(cs, deterministic=True, n_trials=500, output_directory=dir)
+    scenario = Scenario(cs, deterministic=True, n_trials=trails, output_directory=dir)
 
     # Use SMAC to find the best configuration/hyperparameters
     smac = HyperparameterOptimizationFacade(scenario, train_method)
