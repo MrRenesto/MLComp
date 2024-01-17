@@ -39,7 +39,7 @@ def hyperparamtuning(classifierP, configSpace, train_method, dir, X_train, X_tes
     cs = configSpace
     # Add other hyperparameters as needed
     # Scenario object specifying the optimization environment
-    scenario = Scenario(cs, deterministic=True, n_trials=200, output_directory=dir)
+    scenario = Scenario(cs, deterministic=True, n_trials=500, output_directory=dir)
 
     # Use SMAC to find the best configuration/hyperparameters
     smac = HyperparameterOptimizationFacade(scenario, train_method)
@@ -58,6 +58,51 @@ def hyperparamtuning(classifierP, configSpace, train_method, dir, X_train, X_tes
     print("Classification Report:\n", report)
     print("Best Hyperparameters:", best_hyperparameters)
 
+    from sklearn.model_selection import cross_val_score, StratifiedKFold
+    from sklearn.metrics import f1_score
+
+    # Assuming 'clf' is your classifier, 'X' is your feature matrix, and 'y' is your target variable
+
+    # Define the number of folds for cross-validation (e.g., 5-fold)
+    num_folds = 5
+
+    # Set up a StratifiedKFold for classification tasks
+    cv = StratifiedKFold(n_splits=num_folds, shuffle=True, random_state=42)
+
+    # Initialize an empty list to store cross-validation F1 macro scores
+    cv_f1_macro_scores = []
+
+    # Combine feature matrices X_test and X_train
+    X = np.concatenate([X_test, X_train], axis=0)
+
+    # Combine target variables y_test and y_train
+    y = np.concatenate([y_test, y_train], axis=0)
+    # Loop through each fold
+    for train_idx, val_idx in cv.split(X, y):
+        X_train_fold, X_val_fold = X[train_idx], X[val_idx]
+        y_train_fold, y_val_fold = y[train_idx], y[val_idx]
+
+        # Copy the best hyperparameters to a new dictionary for this fold
+        best_hyperparameters_fold = dict(incumbent)
+
+        # Set the classifier's parameters to the best hyperparameters for this fold
+        # clf.set_params(**best_hyperparameters_fold)
+
+        # Train the classifier on the training fold
+        clf.fit(X_train_fold, y_train_fold)
+
+        # Predict on the validation fold
+        y_pred_val = clf.predict(X_val_fold)
+
+        # Calculate the F1 macro score for this fold
+        f1_macro_fold = f1_score(y_val_fold, y_pred_val, average='macro')
+
+        # Append the F1 macro score to the list of cross-validation scores
+        cv_f1_macro_scores.append(f1_macro_fold)
+
+    # Calculate and print the mean F1 macro score
+    mean_cv_f1_macro_score = sum(cv_f1_macro_scores) / len(cv_f1_macro_scores)
+    print("Mean Cross-Validation F1 Macro Score:", mean_cv_f1_macro_score)
 
     labels_df = pd.read_csv('../../Data/test_features.csv')
 
