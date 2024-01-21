@@ -114,7 +114,7 @@ def hyperparamtuning(classifierP, configSpace, train_method, dir, X_train, X_tes
 
     labels_df_pred = clf.predict(labels_df2)
 
-    upload_result(labels_df, labels_df_pred, "LGBM F1 Report: ")
+    upload_result(labels_df, labels_df_pred, "F1 Report: " + str(mean_cv_f1_macro_score))
     return report
 
 '''

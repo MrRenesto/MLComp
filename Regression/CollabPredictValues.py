@@ -1,4 +1,3 @@
-
 import pandas as pd
 from surprise import SVD, NormalPredictor, KNNBasic, KNNWithMeans, SVDpp, NMF, SlopeOne, CoClustering
 from surprise import Dataset, Reader, accuracy
@@ -42,9 +41,38 @@ data_test = Dataset.load_from_file('Data/transformed_data_test.csv', reader_test
 
 algo = SVD()
 
-result = cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
+#result = cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
+#print(result)
+
+from surprise.model_selection import GridSearchCV
+
+# Define the parameter grid for grid search
+param_grid = {'n_factors': [25, 40, 50, 100], 'reg_all': [0.05, 0.1, 0.15]}
+
+# Create the Surprise SVD algorithm
+algo = SVD
+
+# Create the GridSearchCV object
+gs = GridSearchCV(algo, param_grid, measures=['rmse'], cv=5)
+
+# Fit the grid search using the data
+gs.fit(data)
+
+# Get the best parameters from the grid search
+best_params = gs.best_params['rmse']
+
+# Print the best parameters
+print(best_params)
+
+# Create a new SVD algorithm with the best parameters
+best_algo = SVD(n_factors=best_params['n_factors'], reg_all=best_params['reg_all'])
+
+# Perform cross-validation using the best algorithm
+result = cross_validate(best_algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
 print(result)
 
+
+'''
 
 # Train the algorithm on the trainset, and predict ratings for the testset
 data = data.build_full_trainset()
@@ -65,3 +93,4 @@ predictions_df = pd.DataFrame(predictions, columns=['Id', 'Predicted'])
 # Save the DataFrame to a CSV file
 predictions_df.to_csv('predictions_SVD.csv', index=False)
 
+'''
