@@ -26,10 +26,7 @@ def train(config: Configuration, seed: int = 0) -> float:
     pipeline = Pipeline([('smote', SMOTE(random_state=42)), ('classifier', classifier)])
 
     scorer = make_scorer(f1_score, average='macro')
-    # Use cross_val_score with the specified scorer
     scores = cross_val_score(classifier, X_train, y_train, cv=5, scoring=scorer)
-    #scores = cross_val_score(pipeline, X_train, y_train, cv=5)
-    #return 1 - np.mean(scores)
     return 1 - np.mean(scores)
 
 

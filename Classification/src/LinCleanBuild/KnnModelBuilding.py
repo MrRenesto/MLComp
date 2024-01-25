@@ -8,13 +8,13 @@ from Classification.src.LinCleanBuild.ModelBuilding import buildmodel
 # Standard Deviation of F1_macro: 0.012224727227685153
 
 
-#buildmodel(KNeighborsClassifier(n_neighbors=7, weights='distance', metric='euclidean'), False, True)
+buildmodel(KNeighborsClassifier(n_neighbors=7, weights='distance', metric='euclidean'), True, True, True)
 # [0.72855123 0.76058507 0.75764735 0.74348841 0.76042082]
 # Mean F1_macro: 0.7501385757673893
 # Standard Deviation of F1_macro: 0.012501788048134324
 
 
-buildmodel(KNeighborsClassifier(), True, True)
+# buildmodel(KNeighborsClassifier(), True, True)
 # [0.72726682 0.74597314 0.76487514 0.72945757 0.71358177]
 # Mean F1_macro: 0.7362308895991192
 # Standard Deviation of F1_macro: 0.01763303595606785

@@ -16,7 +16,7 @@ from catboost import CatBoostClassifier, Pool
 
 from sklearn.utils import resample
 from scipy.sparse import coo_matrix
-def buildmodel(classifier, oversample, scale):
+def buildmodel(classifier, oversample, scale, outlier=False):
 
     # Load feature data
     features_df = pd.read_csv('../../Data/train_features.csv')
@@ -30,6 +30,23 @@ def buildmodel(classifier, oversample, scale):
 
     X = data.drop('label', axis=1)  # Assuming 'label' is the column with your labels
     y = data['label']
+
+    # Function to replace outliers with min and max values
+    def replace_outliers_with_min_max(column):
+        q1 = np.percentile(column, 25)
+        q3 = np.percentile(column, 75)
+        iqr = q3 - q1
+        lower_bound = q1 - 1.5 * iqr
+        upper_bound = q3 + 1.5 * iqr
+
+        # Replace values below lower_bound with min, and above upper_bound with max
+        column[column < lower_bound] = np.min(column)
+        column[column > upper_bound] = np.max(column)
+        return column
+
+    if outlier:
+        # Apply the outlier replacement logic to each column in X
+        X = X.apply(replace_outliers_with_min_max, axis=0)
 
     if(scale):
         scaler = StandardScaler()
@@ -56,6 +73,10 @@ def buildmodel(classifier, oversample, scale):
 
     labels_df2 = labels_df.drop('Id', axis=1)
     labels_df2 = labels_df2.drop('feature_2', axis=1)
+
+    if outlier:
+        # Apply the outlier replacement logic to each column in X
+        labels_df2 = labels_df2.apply(replace_outliers_with_min_max, axis=0)
 
     if(scale):
         scaler = StandardScaler()

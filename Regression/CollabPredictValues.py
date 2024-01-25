@@ -10,12 +10,15 @@ predict_features = pd.read_csv('Data//test_features.csv')
 
 # Load the merged data
 merged_data = pd.merge(features, label, on='Id')
+# merged_data = merged_data[merged_data['timestamp']>= 1300000000000]
+
+merged_data.drop_duplicates(keep='first', inplace=True)
 
 # Transform the data into the required format
-transformed_data = merged_data[['user', 'item', 'rating']]
+transformed_data = merged_data[['user', 'item', 'rating', 'timestamp']]
 
 # Remove duplicate rows based on 'user', 'item', and 'rating'
-transformed_data = transformed_data.drop_duplicates(subset=['user', 'item', 'rating'])
+transformed_data = transformed_data.drop_duplicates(subset=['user', 'item', 'rating', 'timestamp'])
 
 # Reset index after removing duplicates
 transformed_data = transformed_data.reset_index(drop=True)
@@ -25,22 +28,28 @@ transformed_data = transformed_data.reset_index(drop=True)
 transformed_data.to_csv('Data/transformed_data.csv', index=False, header=False)
 
 # Create a Surprise Reader object
-reader = Reader(rating_scale=(1, 5), line_format='user item rating', sep=',')
+reader = Reader(rating_scale=(1, 5), line_format='user item rating timestamp', sep=',')
 
 # Load data into Surprise Dataset
 data = Dataset.load_from_file('Data/transformed_data.csv', reader)
 
 
-reader_test = Reader(rating_scale=(1, 5), line_format='user item rating', sep=',')
-transformed_data_test = predict_features[['user', 'item']]
+reader_test = Reader(rating_scale=(1, 5), line_format='user item rating timestamp', sep=',')
+transformed_data_test = predict_features[['user', 'item', 'timestamp']]
 # Add a new column 'rating' and set its value to 1 everywhere
 transformed_data_test['rating'] = 1
 # Reorder the columns
-transformed_data_test = transformed_data_test[['user', 'item', 'rating']]
+transformed_data_test = transformed_data_test[['user', 'item', 'rating', 'timestamp']]
 transformed_data_test.to_csv('Data/transformed_data_test.csv', index=False, header=False)
 data_test = Dataset.load_from_file('Data/transformed_data_test.csv', reader_test)
 
-algo = SVD()
+n_factors_value = 5
+reg_all_value = 0.05
+
+lr_all_value = 0.003
+
+# Initialize the SVD algorithm with the specified parameters
+algo = SVDpp(n_factors=n_factors_value, reg_all=reg_all_value, lr_all=lr_all_value)
 
 result = cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
 print(result)

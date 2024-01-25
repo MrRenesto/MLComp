@@ -7,8 +7,9 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report
 
+from Classification.src.ResultHandler import upload_result
+
 # Load feature data
-from ResultHandler import upload_result
 
 features_df = pd.read_csv('../../Data/train_features.csv')
 labels_df = pd.read_csv('../../Data/train_label.csv')

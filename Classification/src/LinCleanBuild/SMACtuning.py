@@ -11,6 +11,18 @@ from smac import HyperparameterOptimizationFacade, Scenario
 from Classification.src.ResultHandler import upload_result
 
 
+def replace_outliers_with_min_max(column):
+    q1 = np.percentile(column, 25)
+    q3 = np.percentile(column, 75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+
+    # Replace values below lower_bound with min, and above upper_bound with max
+    column[column < lower_bound] = np.min(column)
+    column[column > upper_bound] = np.max(column)
+    return column
+
 def loaddata():
     # Load your data
     features_df = pd.read_csv('../../Data/train_features.csv')
@@ -22,8 +34,7 @@ def loaddata():
     X = data.drop('label', axis=1)
     y = data['label']
 
-    scaler = StandardScaler()
-    X = scaler.fit_transform(X)
+    X = X.apply(replace_outliers_with_min_max, axis=0)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=69)
     return X_train, X_test, y_train, y_test
@@ -103,14 +114,14 @@ def hyperparamtuning(classifierP, configSpace, train_method, dir, X_train, X_tes
     # Calculate and print the mean F1 macro score
     mean_cv_f1_macro_score = sum(cv_f1_macro_scores) / len(cv_f1_macro_scores)
     print("Mean Cross-Validation F1 Macro Score:", mean_cv_f1_macro_score)
+    print("Best Hyperparameters:", best_hyperparameters)
 
     labels_df = pd.read_csv('../../Data/test_features.csv')
 
     labels_df2 = labels_df.drop('Id', axis=1)
     labels_df2 = labels_df2.drop('feature_2', axis=1)
 
-    scaler = StandardScaler()
-    labels_df2 = scaler.fit_transform(labels_df2)
+    labels_df2 = labels_df2.apply(replace_outliers_with_min_max, axis=0)
 
     labels_df_pred = clf.predict(labels_df2)
 

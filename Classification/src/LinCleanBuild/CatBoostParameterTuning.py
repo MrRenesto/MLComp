@@ -5,7 +5,7 @@ from catboost import CatBoostClassifier
 from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, f1_score, make_scorer
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
@@ -24,7 +24,8 @@ def train(config: Configuration, seed: int = 0) -> float:
                                     random_state=seed)
     pipeline = Pipeline([('smote', SMOTE(random_state=42)), ('classifier', classifier)])
 
-    scores = cross_val_score(pipeline, X_train, y_train, cv=5)
+    scorer = make_scorer(f1_score, average='macro')
+    scores = cross_val_score(pipeline, X_train, y_train, cv=5, scoring=scorer)
     return 1 - np.mean(scores)
 
 
@@ -45,3 +46,4 @@ hyperparamtuning(clf, cs, train, './smac_catboost_smote', X_train, X_test, y_tra
 
 # {'depth': 6, 'l2_leaf_reg': 2, 'learning_rate': 0.18244088617530532, 'num_trees': 144} macro avg       0.82      0.83      0.82       156
 # {'depth': 8, 'l2_leaf_reg': 10, 'learning_rate': 0.5717205031242358, 'num_trees': 121} macro avg       0.79      0.80      0.79       156
+# Best Hyperparameters: {'depth': 9, 'l2_leaf_reg': 8, 'learning_rate': 0.10112666042498882, 'num_trees': 185}
