@@ -1,10 +1,15 @@
 # MLComp
 Meine Models für Kaggle können hier ausgeführt werden:
+
 Classification:
+
 Executable/Classification/EnsambleModel.py
+
 Executable/Classification/AutoGLModelBuilding.py
 
+
 Regression:
+
 Executable/Regression/SurpriseSVDModel.py
 
 Libraries:
