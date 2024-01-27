@@ -1,0 +1,47 @@
+Evaluating RMSE, MAE of algorithm SVD on 5 split(s).
+
+                  Fold 1  Fold 2  Fold 3  Fold 4  Fold 5  Mean    Std
+RMSE (testset)    0.9924  0.9866  0.9867  0.9906  0.9912  0.9895  0.0024
+MAE (testset)     0.6995  0.6954  0.6957  0.6966  0.6978  0.6970  0.0015
+Fit time          9.87    10.40   10.49   10.61   10.44   10.36   0.25
+Test time         1.46    1.14    1.14    1.42    1.41    1.31    0.14
+
+Evaluating RMSE, MAE of algorithm NormalPredictor on 5 split(s).
+
+                  Fold 1  Fold 2  Fold 3  Fold 4  Fold 5  Mean    Std
+RMSE (testset)    1.3931  1.3864  1.3880  1.3918  1.3897  1.3898  0.0025
+MAE (testset)     1.0128  1.0075  1.0087  1.0110  1.0084  1.0097  0.0019
+Fit time          0.80    1.15    1.16    1.15    1.18    1.09    0.14
+Test time         1.11    0.79    0.79    1.07    1.07    0.97    0.14
+
+valuating RMSE, MAE of algorithm SVDpp on 5 split(s).
+
+                  Fold 1  Fold 2  Fold 3  Fold 4  Fold 5  Mean    Std
+RMSE (testset)    0.9925  0.9934  0.9935  0.9909  0.9931  0.9927  0.0010
+MAE (testset)     0.6934  0.6933  0.6941  0.6934  0.6958  0.6940  0.0009
+Fit time          20.90   21.40   21.60   23.39   20.93   21.64   0.91
+Test time         4.57    4.01    4.09    4.22    4.19    4.22    0.19
+
+Evaluating RMSE, MAE of algorithm NMF on 5 split(s).
+
+                  Fold 1  Fold 2  Fold 3  Fold 4  Fold 5  Mean    Std
+RMSE (testset)    1.1240  1.1166  1.1171  1.1139  1.1231  1.1189  0.0039
+MAE (testset)     0.8283  0.8239  0.8202  0.8199  0.8278  0.8240  0.0036
+Fit time          26.71   27.11   27.04   26.73   28.66   27.25   0.72
+Test time         1.35    1.02    1.01    1.36    1.32    1.21    0.16
+
+Evaluating RMSE, MAE of algorithm SlopeOne on 5 split(s).
+
+                  Fold 1  Fold 2  Fold 3  Fold 4  Fold 5  Mean    Std
+RMSE (testset)    1.0815  1.0835  1.0781  1.0809  1.0821  1.0812  0.0018
+MAE (testset)     0.7221  0.7220  0.7194  0.7227  0.7213  0.7215  0.0011
+Fit time          3.73    4.35    4.46    4.37    4.21    4.22    0.26
+Test time         3.43    3.30    3.62    3.58    3.38    3.46    0.12
+
+Evaluating RMSE, MAE of algorithm CoClustering on 5 split(s).
+
+                  Fold 1  Fold 2  Fold 3  Fold 4  Fold 5  Mean    Std
+RMSE (testset)    1.0641  1.0624  1.0559  1.0617  1.0604  1.0609  0.0028
+MAE (testset)     0.7082  0.7073  0.7047  0.7082  0.7101  0.7077  0.0018
+Fit time          30.80   31.48   31.26   30.94   31.31   31.16   0.25
+Test time         1.29    1.02    1.05    1.28    1.27    1.18    0.12
